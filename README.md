@@ -205,7 +205,6 @@ The R-HORIZON training datasets and evaluation benchmark are available on Huggin
       "is_independent": "[true/false]",
       "is_in_math_env": "[true/false]"
     }
-    // Add/remove variables as needed
   ]
 }
 ```
