@@ -1,9 +1,12 @@
 <div align="center">
 
-# R-HORIZON
+<h1>
+  <img src="./assets/problem-solving.png" alt="logo" width="60" style="vertical-align:middle; margin-right:10px;">
+  R-HORIZON
+</h1>
 
 <div>
-   🚀 How Far Can Your <strong>L</strong>arge <strong>R</strong>easoning <strong>M</strong>odel Really Go in Breadth and Depth? 
+   How Far Can Your Large Reasoning Model Really Go in Breadth and Depth? 
 </div>
 </div>
 
@@ -20,7 +23,7 @@ R-HORIZON is a novel method designed to stimulate long-horizon reasoning behavio
 
 ## 🔥 Releases
 
-**[2025-09-24]**
+**[2025-10-09]**
 - 🎉 **R-HORIZON Benchmark** is now available! Test your LRMs on complex multi-horizon reasoning tasks.
 - 🤗 **Training and evaluation datasets** are available on Hugging Face: [R-HORIZON Dataset](TBD)
 - 📄 **Paper released** on arXiv: [R-HORIZON: How Far Can Your Large Reasoning Model Really Go in Breadth and Depth?](TBD)
@@ -42,7 +45,7 @@ To address these limitations, we introduce **R-HORIZON**, which:
 
 ![](./assets/method_fig.png)
 
-## 📖 Table of Contents
+## 📖 Table of Contents (TODO: update)
 
 - [R-HORIZON](#r-horizon)
   * [🔥 Releases](#-releases)
@@ -66,7 +69,7 @@ We evaluate 20+ state-of-the-art LRMs on the R-HORIZON Benchmark, revealing sign
 
 - **Universal performance degradation**: Even the most powerful models suffer severe drops as problem count increases. For instance, DeepSeek-R1 drops from 87.3% (single problem) to 24.6% (5 problems) on AIME25.
 
-- **Model size matters**: Larger models exhibit more resilience to multi-horizon challenges. R1-Qwen-7B drops from 93.6% to 0% when solving 16 problems, showing 34.1% more degradation than the 32B variant.
+- **Model size matters**: Larger models exhibit more resilience to multi-horizon challenges. R1-Qwen-7B drops from 93.6% to 0% when solving 16 problems, showing 34.1% more degradation than the 32B models.
 
 - **Task-dependent degradation**: Code generation tasks show steeper performance declines compared to mathematics. Many reasoning models lose their tool-calling abilities in web search scenarios, resulting in poor multi-step performance.
 
@@ -88,14 +91,6 @@ Training with R-HORIZON composed data yields substantial improvements on both si
 | Baseline (n=1) | 95.6 | 8.4 | 57.9 | 16.7 | 47.9 | 5.1 | **95.9** | 55.0 |
 | R-HORIZON (n=2) | 95.4 | 21.4 | **65.4** | 34.1 | **49.6** | 10.0 | 94.1 | 80.6 |
 | R-HORIZON (n=4) | 94.6 | **50.6** | 62.9 | 34.8 | 45.4 | 8.1 | 91.9 | 79.1 |
-| R-HORIZON (mixed) | **96.8** | 47.8 | 57.1 | 32.8 | 44.2 | 10.0 | 93.1 | 81.6 |
-| R-HORIZON w/ R_all | 95.0 | 26.8 | 64.6 | **38.8** | 48.8 | **11.9** | 95.0 | **83.4** |
-
-**Key Findings:**
-- Models trained with n=2 composed problems achieve optimal performance on AIME tasks
-- As composition complexity increases (n=4), models show stronger capabilities for handling problems requiring more reasoning steps
-- Using R_all reward function (providing feedback on all intermediate answers) outperforms R_last (final answer only) for multi-problem scenarios
-- Training with composed data benefits both single and multi-horizon reasoning, suggesting a positive transfer effect
 
 
 ## Quick Start
@@ -111,8 +106,9 @@ cd R-HORIZON
 conda create -n r-horizon python=3.10 -y
 conda activate r-horizon
 
-# Install PyTorch (adjust CUDA version as needed)
-pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu124
+# Install PyTorch
+pip3 install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu124
+pip3 install flash-attn --no-build-isolation
 
 # Install additional dependencies
 pip install -r requirements.txt
@@ -123,9 +119,7 @@ pip install -r requirements.txt
 
 ```bash
 # Download benchmark datasets
-python scripts/download_benchmark.py --dataset all
-# Or download specific datasets
-python scripts/download_benchmark.py --dataset MATH500,AIME24,AIME25
+python ./evaluation/data/download.py
 ```
 
 2. Evaluate your model 
@@ -134,56 +128,85 @@ python scripts/download_benchmark.py --dataset MATH500,AIME24,AIME25
 
 ```
 
-### Training with RLVR (TODO: luyi)
+### Training with R-HORIZON datasets
+1. Download composed training data
 
-```bash
-# Generate composed training data
+```python
+from huggingface_hub import snapshot_download
 
+snapshot_download(
+    repo_id="lulululuyi/R-HORIZON-training-data",
+    repo_type="dataset",
+    local_dir="./training/data",
+)
 ```
-
 
 2. Launch training
 
 ```bash
 # Train with R-HORIZON using GRPO algorithm
-python train.py \
-    --config config/train_config.yaml \
-    --algorithm grpo \
-    --dataset r_horizon_math \
-    --num_problems 2 \
-    --reward_scheme r_all \
-    --model_name_or_path r1-qwen-7b \
-    --output_dir ./checkpoints \
-    --num_train_epochs 3 \
-    --per_device_train_batch_size 4 \
-    --gradient_accumulation_steps 8 \
-    --learning_rate 5e-6 \
-    --warmup_steps 100
+bash ./training/scripts/train/skywork-or1-rlvr-math-training-7b-40k.sh
 ```
 
 
 
 # Dataset
-The R-HORIZON datasets and benchmarks are available on Hugging Face Hub:
+## Dataset Construction
+Step 1: Filter Samples with Valid Integers  
+```bash
+# Purpose: Retain samples containing valid integers in input text and pure integer targets, excluding ambiguous numeric expressions (e.g., floats, fractions, LaTeX commands).  
+python step1_filt_integer_samples.py
+```
 
 
 
-Dataset Structure
+Step 2: Identify Key Variables
+```bash
+# Purpose: select "key variables" (critical integers that significantly affect problem outcomes)
+# configure API credentials in the script (replace YOUR_API_KEY)
+python step2_select_key_variable.py
+```
+
+Step 3: Combine into Chained Reasoning Problems
+```bash
+# Purpose: Generate multi-horizon chained problems where each step’s key variable depends on the previous step’s answer.
+python step3_combine_problems.py
+```
+
+## Dataset on Hugging Face Hub
+The R-HORIZON training datasets and evaluation benchmark are available on Hugging Face Hub:
+## Dataset on Hugging Face Hub
+The R-HORIZON training datasets and evaluation benchmark are available on Hugging Face Hub:
+| Dataset Type | Dataset Name                  | Hugging Face Link                                                                 |
+|--------------|-------------------------------|-----------------------------------------------------------------------------------|
+| Evaluation   | R-HORIZON-Math500             | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-Math500)             |
+| Evaluation   | R-HORIZON-AIME24              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AIME24)               |
+| Evaluation   | R-HORIZON-AIME25              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AIME25)               |
+| Evaluation   | R-HORIZON-AMC23              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AMC23)               |
+| Evaluation   | R-HORIZON-Websearch           | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-Websearch)            |
+| Training     | R-HORIZON-training-data       | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data)        |
+
+
+
+## Dataset Structure
 
 ```json
 {
-  "id": "TBD",
-  "problems": [
+  "input": "[1-N linked problems + solving instructions (with [variablek]/[answerk] placeholders)]",
+  "instanceId": "[Unique ID for this instance]",
+  "origin_instanceIds": "[List of original problem IDs]",
+  "target": "[List of final answers, e.g., [answer1, answer2]]",
+  "num_problems": "[Total problems, e.g., 2]",
+  "selected_variables": [
     {
-      "problem_id": "TBD",
-      "question": "TBD",
-      "original_answer": "TBD",
-      "modified_parameters": "TBD"
+      "number": "[Key variable from problem]",
+      "context": "[Context of the number]",
+      "text": "[Text of the number]",
+      "is_independent": "[true/false]",
+      "is_in_math_env": "[true/false]"
     }
-  ],
-  "dependencies": "TBD",
-  "composition_method": "TBD",
-  "expected_reasoning_steps": "TBD"
+    // Add/remove variables as needed
+  ]
 }
 ```
 
