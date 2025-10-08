@@ -121,11 +121,58 @@ pip install -r requirements.txt
 # Download benchmark datasets
 python ./evaluation/data/download.py
 ```
+2. modify config.json under evaluation directory
+```json
+{
+    "inference": {
+        // model alias for run.sh
+        "r1-distill-qwen7b": {
+            "base_url": "http://{ip}:{port}/v1/completions",
+            "api_key": "EMPTY",
+            // model_name is for vllm
+            "model_name": "xxx", 
+            "params": {
+                "temperature": 1.0,
+                "top_p": 0.95,
+                "top_k": 10,
+                "max_tokens": 65536
+            },
+            "prompt_prefix": "<|im_start|>user:\n",
+            "prompt_suffix": "\n<|im_end|>\n<|im_start|>assistant:\n"
+        }
+    },
+    "extract": {
+        "gpt-4.1": {
+            "model_name": "gpt-4.1",
+            "base_url": "https://xx/chat/completions",
+            "api_key": "xxx",
+            "params": {
+                "temperature": 0.0,
+                "max_tokens": 16000
+            }
+        }
+    }
+}
+```
 
-2. Evaluate your model 
+3. Run a vllm server
+```
+vllm serve {modelname}\ 
+    --host {ip}\
+    --port {port}\
+    --served-model-name {modelname}\ 
+    --dtype auto --pipeline-parallel-size 1 --tensor-parallel-size 1 --trust-remote-code\
+    --enable-chunked-prefill --max-model-len 131072 --max-num-batched-tokens 10240\
+    --max-num-seqs 256 --gpu-memory-utilization 0.85 --disable-custom-all-reduce\
+    --enable-reasoning --reasoning-parser deepseek_r1 --enable-chunked-prefill
+```
 
-```python
-
+4. Evaluate your model 
+Here is a bash example, and model_key is defined in config.json
+```bash
+sh evaluation/run.sh {input_file} {output_dir} {model_key}
+# example
+sh evaluation/run.sh evaluation/data/R-HORIZON-Math500/Math500-combined-n2.jsonl evaluation/result r1-distill-qwen7b
 ```
 
 ### Training with R-HORIZON datasets

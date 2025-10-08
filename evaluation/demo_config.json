@@ -3,7 +3,7 @@
         "r1-distill-qwen7b" : {
             "base_url" : "", 
             "api_key" : "",
-            "model_name" : "",
+            "model_name" : "model name for vllm",
             "params" : {
                 "temperature": 1.0,
                 "top_p" : 0.95,

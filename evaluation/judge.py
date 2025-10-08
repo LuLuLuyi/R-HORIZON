@@ -112,12 +112,12 @@ if __name__ == '__main__':
     print(args)
 
 
-    items = json.load(open(args.raw_input, 'r'))
     query_lst = []
     cnt = 0
-    for item in items['examples']:
-        key = '-'.join([str(idx) for idx in item['instanceIds']])
-        labels = [lst[0] for lst in item['group_targets']]
+    for line in open(args.raw_input, 'r'):
+        item = json.loads(line)
+        key = item['instanceId']
+        labels = item['target'][0].split(",")
         query_lst.append((key, labels))
         cnt += 1
     raw_df = pd.DataFrame(query_lst, columns=['key', 'labels'])

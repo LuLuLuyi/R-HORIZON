@@ -39,7 +39,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=str, default=None)
     parser.add_argument('--output', type=str, default='output.json')
-    parser.add_argument('--config', type=str, default='config.json')
+    parser.add_argument('--config', type=str, default='evaluation/config.json')
     parser.add_argument('--model_name', type=str, default='gpt-4.1')
     args = parser.parse_args()
     print(args)
@@ -80,25 +80,3 @@ if __name__ == '__main__':
 
     with open(args.output, "a") as fo:
         inference(query_lst, fo, config)
-
-    # import requests
-    # url = "https://aigc.sankuai.com/v1/openai/native/chat/completions"
-    # # data = json.dumps(data)
-    # headers = {
-    #     "Content-Type": "application/json",
-    #     "Authorization": f"Bearer {1873925539543834701}"
-    # }
-    # message = [
-    #     {"role": "system", "content": "You are a helpful assistant. 提取给出的结果中，每个问题的题号和答案，并返回一个json格式。key为题目序号，value为答案。"},
-    #     {"role": "user", "content": "test"}
-    # ]
-    # data = {
-    #     "messages": message,
-    #     "stream": False,
-    #     "model": "gpt-4.1",
-    #     "max_tokens": 16000,
-    #     "temperature":1.0
-    # }
-    # resp = requests.post(url, json=data, headers=headers, timeout=(10, 60))
-    # print(resp.text)
-    # print(resp)

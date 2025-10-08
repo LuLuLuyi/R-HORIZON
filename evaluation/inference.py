@@ -9,6 +9,7 @@ import requests
 import time
 
 def do_post(url, data, headers, model_name):
+    print(url)
     response = requests.post(url, json=data, headers=headers, timeout=(600, 600))
     retry_times = 0
     while True:
@@ -78,7 +79,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', type=str, default=None)
     parser.add_argument('--output', type=str, default='output.json')
-    parser.add_argument('--config', type=str, default='config.json')
+    parser.add_argument('--config', type=str, default='evaluation/config.json')
     parser.add_argument('--model_name', type=str, default='THUDM/chatglm-6b')
     args = parser.parse_args()
     print(args)
@@ -95,11 +96,11 @@ if __name__ == '__main__':
             exists.add(key)
     print(f"load exists {len(exists)} from {args.output}")
 
-    items = json.load(open(args.input, 'r'))
     query_lst = []
     cnt = 0
-    for item in items['examples']:
-        key = '-'.join([str(idx) for idx in item['instanceIds']])
+    for line in open(args.input, 'r'):
+        item = json.loads(line)
+        key = item['instanceId']
         if key in exists:
             continue
         prompt = item['input']
