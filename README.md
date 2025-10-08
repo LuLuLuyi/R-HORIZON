@@ -14,7 +14,7 @@
 
 
 <p align="center">
-  📃 <a href="TBD" target="_blank">Paper</a >  • 🤗 <a href="TBD" target="_blank">Dataset</a > 
+  📃 <a href="TBD" target="_blank">Paper</a > • 🌐 <a href="https://reasoning-horizon.github.io/" target="_blank">Project Page</a > • 🤗 <a href="TBD" target="_blank">Dataset</a >
 </p >
 
 R-HORIZON is a novel method designed to stimulate long-horizon reasoning behaviors in Large Reasoning Models (LRMs) through query composition. We transform isolated problems into complex multi-step reasoning scenarios, revealing that even the most advanced LRMs suffer significant performance degradation when facing interdependent problems that span long reasoning horizons.
