@@ -129,11 +129,12 @@ python ./evaluation/data/download.py
 ```json
 {
     "inference": {
-        // model alias for run.sh
+        # model_key (e.g. r1-distill-qwen7b) is for run.sh
         "r1-distill-qwen7b": {
-            "base_url": "http://{ip}:{port}/v1/completions",
+            # the ip and port used in vllm server
+            "base_url": "http://{Your IP and Port}/v1/completions",
             "api_key": "EMPTY",
-            // model_name is for vllm
+            # model_name is corresponding to the modelname in vllm server
             "model_name": "xxx", 
             "params": {
                 "temperature": 1.0,
@@ -148,8 +149,8 @@ python ./evaluation/data/download.py
     "extract": {
         "gpt-4.1": {
             "model_name": "gpt-4.1",
-            "base_url": "https://xx/chat/completions",
-            "api_key": "xxx",
+            "base_url": "{base url}",
+            "api_key": "{Your API key}",
             "params": {
                 "temperature": 0.0,
                 "max_tokens": 16000
