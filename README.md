@@ -101,7 +101,7 @@ Training with R-HORIZON composed data yields substantial improvements on both si
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/R-HORIZON.git
+git clone https://github.com/LuLuLuyi/R-HORIZON.git
 cd R-HORIZON
 
 # Create conda environment
