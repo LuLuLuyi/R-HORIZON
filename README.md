@@ -14,7 +14,7 @@
 
 
 <p align="center">
-  📃 <a href="TBD" target="_blank">Paper</a > • 🌐 <a href="https://reasoning-horizon.github.io/" target="_blank">Project Page</a > • 🤗 <a href="TBD" target="_blank">Dataset</a >
+  📃 <a href="https://arxiv.org/abs/2510.08189" target="_blank">Paper</a > • 🌐 <a href="https://reasoning-horizon.github.io/" target="_blank">Project Page</a > • 🤗 <a href="https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data" target="_blank">Dataset</a >
 </p >
 
 R-HORIZON is a novel method designed to stimulate long-horizon reasoning behaviors in Large Reasoning Models (LRMs) through query composition. We transform isolated problems into complex multi-step reasoning scenarios, revealing that even the most advanced LRMs suffer significant performance degradation when facing interdependent problems that span long reasoning horizons.
@@ -25,8 +25,8 @@ R-HORIZON is a novel method designed to stimulate long-horizon reasoning behavio
 
 **[2025-10-09]**
 - 🎉 **R-HORIZON Benchmark** is now available! Test your LRMs on complex multi-horizon reasoning tasks.
-- 🤗 **Training and evaluation datasets** are available on Hugging Face: [R-HORIZON Dataset](TBD)
-- 📄 **Paper released** on arXiv: [R-HORIZON: How Far Can Your Large Reasoning Model Really Go in Breadth and Depth?](TBD)
+- 🤗 **Training and evaluation datasets** are available on Hugging Face: [R-HORIZON Dataset](https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data)
+- 📄 **Paper released** on arXiv: [R-HORIZON: How Far Can Your Large Reasoning Model Really Go in Breadth and Depth?](https://arxiv.org/abs/2510.08189)
 
 
 ## 🌟 Overview
@@ -45,19 +45,21 @@ To address these limitations, we introduce **R-HORIZON**, which:
 
 ![](./assets/method_fig.png)
 
-## 📖 Table of Contents (TODO: update)
+## 📖 Table of Contents
 
-- [R-HORIZON](#r-horizon)
-  * [🔥 Releases](#-releases)
-  * [🌟 Overview](#-overview)
-  * [📊 R-HORIZON Benchmark](#-r-horizon-benchmark)
-  * [🚀 Training with R-HORIZON](#-training-with-r-horizon)
-  * [Quick Start](#quick-start)
-    + [Installation](#installation)
-    + [Benchmark Evaluation](#benchmark-evaluation)
-    + [Training with RLVR](#training-with-rlvr)
-  * [Dataset](#dataset)
-  * [Citation](#citation)
+- [🔥 Releases](#-releases)
+- [🌟 Overview](#-overview)
+- [📊 R-HORIZON Benchmark](#-r-horizon-benchmark)
+- [🚀 Training with R-HORIZON](#-training-with-r-horizon)
+- [Quick Start](#quick-start)
+  - [Installation](#installation)
+  - [Benchmark Evaluation](#benchmark-evaluation)
+  - [Training with R-HORIZON datasets](#training-with-r-horizon-datasets)
+- [Dataset](#dataset)
+  - [Dataset Construction](#dataset-construction)
+  - [Dataset on Hugging Face Hub](#dataset-on-hugging-face-hub)
+  - [Dataset Structure](#dataset-structure)
+- [Citation](#citation)
 
 ## 📊 R-HORIZON Benchmark
 
@@ -114,14 +116,16 @@ pip3 install flash-attn --no-build-isolation
 pip install -r requirements.txt
 ```
 
-### Benchmark Evaluation (TODO: linsen)
+### Benchmark Evaluation
+
 1. Download the R-HORIZON Benchmark
 
 ```bash
 # Download benchmark datasets
 python ./evaluation/data/download.py
 ```
-2. modify config.json under evaluation directory
+
+2. Modify config.json under evaluation directory
 ```json
 {
     "inference": {
@@ -156,11 +160,11 @@ python ./evaluation/data/download.py
 ```
 
 3. Run a vllm server
-```
-vllm serve {modelname}\ 
+```bash
+vllm serve {modelname}\
     --host {ip}\
     --port {port}\
-    --served-model-name {modelname}\ 
+    --served-model-name {modelname}\
     --dtype auto --pipeline-parallel-size 1 --tensor-parallel-size 1 --trust-remote-code\
     --enable-chunked-prefill --max-model-len 131072 --max-num-batched-tokens 10240\
     --max-num-seqs 256 --gpu-memory-utilization 0.85 --disable-custom-all-reduce\
@@ -168,6 +172,7 @@ vllm serve {modelname}\
 ```
 
 4. Evaluate your model 
+
 Here is a bash example, and model_key is defined in config.json
 ```bash
 sh evaluation/run.sh {input_file} {output_dir} {model_key}
@@ -197,15 +202,13 @@ bash ./training/scripts/train/skywork-or1-rlvr-math-training-7b-40k.sh
 
 
 
-# Dataset
-## Dataset Construction
+## Dataset
+### Dataset Construction
 Step 1: Filter Samples with Valid Integers  
 ```bash
 # Purpose: Retain samples containing valid integers in input text and pure integer targets, excluding ambiguous numeric expressions (e.g., floats, fractions, LaTeX commands).  
 python step1_filt_integer_samples.py
 ```
-
-
 
 Step 2: Identify Key Variables
 ```bash
@@ -216,26 +219,25 @@ python step2_select_key_variable.py
 
 Step 3: Combine into Chained Reasoning Problems
 ```bash
-# Purpose: Generate multi-horizon chained problems where each step’s key variable depends on the previous step’s answer.
+# Purpose: Generate multi-horizon chained problems where each step's key variable depends on the previous step's answer.
 python step3_combine_problems.py
 ```
 
-## Dataset on Hugging Face Hub
+### Dataset on Hugging Face Hub
 The R-HORIZON training datasets and evaluation benchmark are available on Hugging Face Hub:
-## Dataset on Hugging Face Hub
-The R-HORIZON training datasets and evaluation benchmark are available on Hugging Face Hub:
+
 | Dataset Type | Dataset Name                  | Hugging Face Link                                                                 |
 |--------------|-------------------------------|-----------------------------------------------------------------------------------|
 | Evaluation   | R-HORIZON-Math500             | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-Math500)             |
 | Evaluation   | R-HORIZON-AIME24              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AIME24)               |
 | Evaluation   | R-HORIZON-AIME25              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AIME25)               |
-| Evaluation   | R-HORIZON-AMC23              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AMC23)               |
+| Evaluation   | R-HORIZON-AMC23               | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AMC23)               |
 | Evaluation   | R-HORIZON-Websearch           | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-Websearch)            |
 | Training     | R-HORIZON-training-data       | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data)        |
 
 
 
-## Dataset Structure
+### Dataset Structure
 
 ```json
 {
@@ -256,5 +258,17 @@ The R-HORIZON training datasets and evaluation benchmark are available on Huggin
 }
 ```
 
-# Citation
-If you find R-HORIZON helpful for your research, please cite our paper.
+## Citation
+If you find R-HORIZON helpful for your research, please cite our paper:
+
+```bibtex
+@misc{lu2025rhorizonfarlargereasoning,
+      title={R-Horizon: How Far Can Your Large Reasoning Model Really Go in Breadth and Depth?}, 
+      author={Yi Lu and Jianing Wang and Linsen Guo and Wei He and Hongyin Tang and Tao Gui and Xuanjing Huang and Xuezhi Cao and Wei Wang and Xunliang Cai},
+      year={2025},
+      eprint={2510.08189},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2510.08189}, 
+}
+```
