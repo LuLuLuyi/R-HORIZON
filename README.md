@@ -129,13 +129,13 @@ python ./evaluation/data/download.py
 ```json
 {
     "inference": {
-        # model_key (e.g. r1-distill-qwen7b) is for run.sh
+        // model_key (e.g. r1-distill-qwen7b) is for run.sh
         "r1-distill-qwen7b": {
-            # the ip and port used in vllm server
+            // the ip and port used in vllm server
             "base_url": "http://{Your IP and Port}/v1/completions",
             "api_key": "EMPTY",
-            # model_name is corresponding to the modelname in vllm server
-            "model_name": "xxx", 
+            // model_name is corresponding to the modelname in vllm server
+            "model_name": "{vllm's modelname}", 
             "params": {
                 "temperature": 1.0,
                 "top_p": 0.95,
@@ -149,7 +149,7 @@ python ./evaluation/data/download.py
     "extract": {
         "gpt-4.1": {
             "model_name": "gpt-4.1",
-            "base_url": "{base url}",
+            "base_url": "{OpenAI's baseurl}",
             "api_key": "{Your API key}",
             "params": {
                 "temperature": 0.0,
