@@ -2,11 +2,11 @@ from huggingface_hub import snapshot_download
 from pathlib import Path
 
 datasets = [
-    "lulululuyi/R-HORIZON-Math500",
-    "lulululuyi/R-HORIZON-AIME24",
-    "lulululuyi/R-HORIZON-AIME25",
-    "lulululuyi/R-HORIZON-AMC23",
-    "lulululuyi/R-HORIZON-Websearch",
+    "meituan-longcat/R-HORIZON-Math500",
+    "meituan-longcat/R-HORIZON-AIME24",
+    "meituan-longcat/R-HORIZON-AIME25",
+    "meituan-longcat/R-HORIZON-AMC23",
+    "meituan-longcat/R-HORIZON-Websearch",
 ]
 
 for repo_id in datasets:
