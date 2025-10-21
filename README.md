@@ -14,7 +14,7 @@
 
 
 <p align="center">
-  📃 <a href="https://arxiv.org/abs/2510.08189" target="_blank">Paper</a > • 🌐 <a href="https://reasoning-horizon.github.io/" target="_blank">Project Page</a > • 🤗 <a href="https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data" target="_blank">Dataset</a >
+  📃 <a href="https://arxiv.org/abs/2510.08189" target="_blank">Paper</a > • 🌐 <a href="https://reasoning-horizon.github.io/" target="_blank">Project Page</a > • 🤗 <a href="https://huggingface.co/datasets/meituan-longcat/R-HORIZON-training-data" target="_blank">Dataset</a >
 </p >
 
 R-HORIZON is a novel method designed to stimulate long-horizon reasoning behaviors in Large Reasoning Models (LRMs) through query composition. We transform isolated problems into complex multi-step reasoning scenarios, revealing that even the most advanced LRMs suffer significant performance degradation when facing interdependent problems that span long reasoning horizons.
@@ -25,7 +25,7 @@ R-HORIZON is a novel method designed to stimulate long-horizon reasoning behavio
 
 **[2025-10-09]**
 - 🎉 **R-HORIZON Benchmark** is now available! Test your LRMs on complex multi-horizon reasoning tasks.
-- 🤗 **Training and evaluation datasets** are available on Hugging Face: [R-HORIZON Dataset](https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data)
+- 🤗 **Training and evaluation datasets** are available on Hugging Face: [R-HORIZON Dataset](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-training-data)
 - 📄 **Paper released** on arXiv: [R-HORIZON: How Far Can Your Large Reasoning Model Really Go in Breadth and Depth?](https://arxiv.org/abs/2510.08189)
 
 
@@ -101,7 +101,7 @@ Training with R-HORIZON composed data yields substantial improvements on both si
 
 ```bash
 # Clone the repository
-git clone https://github.com/LuLuLuyi/R-HORIZON.git
+git clone https://github.com/meituan-longcat/R-HORIZON.git
 cd R-HORIZON
 
 # Create conda environment
@@ -188,7 +188,7 @@ sh evaluation/run.sh evaluation/data/R-HORIZON-Math500/Math500-combined-n2.jsonl
 from huggingface_hub import snapshot_download
 
 snapshot_download(
-    repo_id="lulululuyi/R-HORIZON-training-data",
+    repo_id="meituan-longcat/R-HORIZON-training-data",
     repo_type="dataset",
     local_dir="./training/data",
 )
@@ -229,12 +229,12 @@ The R-HORIZON training datasets and evaluation benchmark are available on Huggin
 
 | Dataset Type | Dataset Name                  | Hugging Face Link                                                                 |
 |--------------|-------------------------------|-----------------------------------------------------------------------------------|
-| Evaluation   | R-HORIZON-Math500             | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-Math500)             |
-| Evaluation   | R-HORIZON-AIME24              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AIME24)               |
-| Evaluation   | R-HORIZON-AIME25              | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AIME25)               |
-| Evaluation   | R-HORIZON-AMC23               | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-AMC23)               |
-| Evaluation   | R-HORIZON-Websearch           | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-Websearch)            |
-| Training     | R-HORIZON-training-data       | [link](https://huggingface.co/datasets/lulululuyi/R-HORIZON-training-data)        |
+| Evaluation   | R-HORIZON-Math500             | [link](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-Math500)             |
+| Evaluation   | R-HORIZON-AIME24              | [link](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-AIME24)               |
+| Evaluation   | R-HORIZON-AIME25              | [link](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-AIME25)               |
+| Evaluation   | R-HORIZON-AMC23               | [link](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-AMC23)               |
+| Evaluation   | R-HORIZON-Websearch           | [link](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-Websearch)            |
+| Training     | R-HORIZON-training-data       | [link](https://huggingface.co/datasets/meituan-longcat/R-HORIZON-training-data)        |
 
 
 
